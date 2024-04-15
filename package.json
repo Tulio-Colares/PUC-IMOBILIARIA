@@ -9,6 +9,7 @@
   "main": "index.js",
   "type": "module",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "browserslist": "^4.23.0",
     "caniuse-lite": "^1.0.30001609",
     "dotenv": "^16.4.5",
