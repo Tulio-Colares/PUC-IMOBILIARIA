@@ -32,7 +32,7 @@ export default function SignUp() {
       }
       setLoading(false);
       setError(null);
-      navigate('/sign-in');
+      navigate('/');
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -44,7 +44,7 @@ export default function SignUp() {
       <div className='row justify-content-center'>
         <div className='col-6'>
           <div className='col text-center'>
-            <h1>Conectar</h1>
+            <h1>Crie uma conta</h1>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -65,6 +65,13 @@ export default function SignUp() {
                 {loading ? 'Loading...' : 'Sign Up'}
               </button>
             </div>
+            <div className=' mt-5 text-center'>
+              <p>Já tem uma conta?</p>
+              <Link to={'/sign-in'}>
+                <span>Sign in</span>
+              </Link>
+            </div>
+            {error && <p className='bg-danger-subtle text-danger p-2 rounded text-center'>{error}</p>}
           </form>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -60,6 +60,13 @@ export default function SignIn() {
                 {loading ? 'Loading...' : 'Sign Up'}
               </button>
             </div>
+            <div className=' mt-5 text-center'>
+              <p>Ainda não tem uma conta?</p>
+              <Link to={'/sign-up'}>
+                <span>Sign up</span>
+              </Link>
+            </div>
+            {error && <p className='bg-danger-subtle text-danger p-2 rounded text-center'>{error}</p>}
           </form>
         </div>
       </div>
