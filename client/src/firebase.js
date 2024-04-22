@@ -4,8 +4,10 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+console.log("chave de acesso: ", import.meta.env.VITE_SERVER_KEY )
+
 const firebaseConfig = {
-  apiKey: process.env.VITE_FIREBASE_APIKEY,
+  apiKey: import.meta.env.VITE_SERVER_KEY,
   authDomain: "puc-imoveis.firebaseapp.com",
   projectId: "puc-imoveis",
   storageBucket: "puc-imoveis.appspot.com",

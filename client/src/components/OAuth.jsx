@@ -16,20 +16,20 @@ export default function OAuth() {
 
       console.log(result)
 
-      // const res = await fetch('/server/auth/google', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     name: result.user.displayName,
-      //     email: result.user.email,
-      //     photo: result.user.photoURL,
-      //   }),
-      // });
-      // const data = await res.json();
-      // dispatch(signInSuccess(data));
-      // navigate('/');
+      const res = await fetch('/server/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        }),
+      });
+      const data = await res.json();
+      dispatch(signInSuccess(data));
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
