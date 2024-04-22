@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 export default function Header() {
+    const { currentUser } = useSelector((state) => state.user);
+
   return (
     <header>
         <nav className="navbar navbar-expand-lg bg-body-tertiary ">
@@ -21,11 +24,14 @@ export default function Header() {
                     <a className="nav-link" href="#">Logar</a>
                     </li>
                 </ul>
-                <form className="d-flex" role="search">
-                    <input className="form-control me-2" type="search" placeholder="Pesquisa" aria-label="Search"></input>
-                    <button className="btn btn-outline-success" type="submit">Pesquisar</button>
-                </form>
+                    <form className="d-flex" role="search">
+                        <input className="form-control me-2" type="search" placeholder="Pesquisa" aria-label="Search"></input>
+                        <button className="btn btn-outline-success" type="submit">Pesquisar</button>
+                    </form>
                 </div>
+                {currentUser ? (
+                <img className='rounded ms-3' width="38" height="38" src={currentUser.avatar} alt='profile' />
+                ) : (<li className=''> Sign in</li>)}
             </div>
         </nav>
     </header>
