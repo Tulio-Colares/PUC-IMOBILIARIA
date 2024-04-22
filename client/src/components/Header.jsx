@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Header() {
@@ -29,9 +30,11 @@ export default function Header() {
                         <button className="btn btn-outline-success" type="submit">Pesquisar</button>
                     </form>
                 </div>
-                {currentUser ? (
-                <img className='rounded ms-3' width="38" height="38" src={currentUser.avatar} alt='profile' />
-                ) : (<li className=''> Sign in</li>)}
+                <Link to='/profile'>
+                    {currentUser ? (
+                    <img className='rounded ms-3' width="38" height="38" src={currentUser.avatar} alt='profile' />
+                    ) : (<li className='nav-link ms-3'>Logar</li>)}
+                </Link>
             </div>
         </nav>
     </header>
