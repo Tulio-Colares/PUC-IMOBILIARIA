@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -60,7 +61,10 @@ export default function SignIn() {
                 {loading ? 'Loading...' : 'Sign Up'}
               </button>
             </div>
-            <div className=' mt-5 text-center'>
+            <div className='col text-center  mt-2'>
+              <OAuth />
+            </div>
+            <div className='mt-5 text-center'>
               <p>Ainda não tem uma conta?</p>
               <Link to={'/sign-up'}>
                 <span>Sign up</span>
