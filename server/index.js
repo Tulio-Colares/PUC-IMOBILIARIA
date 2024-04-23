@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.js';
 import authRouter from './routes/auth.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 mongoose
@@ -15,6 +16,8 @@ mongoose
   });
 
 const app = express();
+
+app.use(cookieParser());
 
 app.use(express.json())
 
