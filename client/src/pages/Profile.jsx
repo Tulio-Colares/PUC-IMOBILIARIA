@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux'
 import { useRef, useState, useEffect } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
-import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice';
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 export default function Profile() {
@@ -71,6 +71,23 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className='container mt-3'>
       <div className='row justify-content-center'>
@@ -116,17 +133,16 @@ export default function Profile() {
             <button type="submit" className="btn btn-primary mt-3 w-25">Atualizar</button>
           </div>
 
+          <div className='flex justify-between mt-5'>
+            <span onClick={handleDeleteUser} className='btn btn-danger'>Deletar conta</span>
+            <span className='btn'>Sair</span>
+            <p>{error ? error : ''}</p>
+            <p>
+              {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
+            </p>
+          </div>
         </div>
-      </div>
-      <div className='flex justify-between mt-5'>
-        <span>Deletar conta</span>
-        <span>Sair</span>
-      </div>
-
-      <p>{error ? error : ''}</p>
-      <p>
-        {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
-      </p>
-</form>
+      </div>  
+    </form>
   )
 }
