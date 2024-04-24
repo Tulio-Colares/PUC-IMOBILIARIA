@@ -3,15 +3,20 @@ import {useSelector} from 'react-redux'
 import { useRef, useState, useEffect } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
+import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Profile() {
 
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const dispatch = useDispatch();
+  console.log(formData)
 
   useEffect(() => {
     if (file) {
@@ -38,44 +43,90 @@ export default function Profile() {
     );
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/server/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  };
+
   return (
-    <form className='container mt-3'>
+    <form onSubmit={handleSubmit} className='container mt-3'>
       <div className='row justify-content-center'>
         <div className='col-6 '>
           <h1 className='text-center'>Perfil</h1>
-          <input
-          onChange={(e) => setFile(e.target.files[0])} type='file' ref={fileRef} hidden accept='image/*' />
+
+          <input onChange={(e) => setFile(e.target.files[0])} type='file' ref={fileRef} hidden accept='image/*' />
+
           <img className='rounded my-4 mx-auto d-block pe-auto' width="200" height="200" 
-            onClick={() => fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt='profile' style={{ "hover": "pointer" }}/>
+            onClick={() => fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt='profile'/>
+
           <p className='text-sm self-center'>
-          {fileUploadError ? (
-            <span className='text-red-700'>
-              A imagem precisa ter tamanho inferior a 2 mb
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span>{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className='text-success text-center'>Imagem carregada com sucesso!</span>
-          ) : ('')}
-        </p>
+            {fileUploadError ? (
+              <span className=''>
+                A imagem precisa ter tamanho inferior a 2 mb
+              </span>
+            ) : filePerc > 0 && filePerc < 100 ? (
+              <span>{`Uploading ${filePerc}%`}</span>
+            ) : filePerc === 100 ? (
+              <span className='text-success text-center'>Imagem carregada com sucesso!</span>
+            ) : ('')}
+          </p>
+
           <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Novo Nome de usuário</label>
-            <input type="text" className="form-control" id="exampleUserName" aria-describedby="userNameHelp"/>
+            <label htmlFor="exampleInputName1" className="form-label">Novo Nome de usuário</label>
+            <input defaultValue={currentUser.username} onChange={handleChange} 
+             type="text" className="form-control" id="username" aria-describedby="userNameHelp"/>
           </div>
+
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">Novo Email</label>
-            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-            <div id="emailHelp" className="form-text">Nós nunca iremos compartilhar o seu email com ninguém!</div>
+            <input defaultValue={currentUser.email} onChange={handleChange} 
+             type="email" className="form-control" id="email" aria-describedby="emailHelp"/>
+            <div className="form-text">Nós nunca iremos compartilhar o seu email com ninguém!</div>
           </div>
+
           <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Nova Senha</label>
-            <input type="password" className="form-control" id="exampleInputPassword1"/>
+            <label htmlFor="exampleInputPassword" className="form-label">Nova Senha</label>
+            <input onChange={handleChange} type="password" className="form-control" id="password"/>
           </div>
+
           <div className='text-center'>
             <button type="submit" className="btn btn-primary mt-3 w-25">Atualizar</button>
           </div>
+
         </div>
       </div>
+      <div className='flex justify-between mt-5'>
+        <span>Deletar conta</span>
+        <span>Sair</span>
+      </div>
+
+      <p>{error ? error : ''}</p>
+      <p>
+        {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
+      </p>
 </form>
   )
 }
