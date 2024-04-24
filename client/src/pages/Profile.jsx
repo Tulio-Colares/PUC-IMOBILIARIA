@@ -88,6 +88,22 @@ export default function Profile() {
     }
   };
 
+  const handleSignOut = async () => {
+
+    try {
+      dispatch(signOutUserStart())
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(data.message));
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className='container mt-3'>
       <div className='row justify-content-center'>
@@ -135,7 +151,7 @@ export default function Profile() {
 
           <div className='flex justify-between mt-5'>
             <span onClick={handleDeleteUser} className='btn btn-danger'>Deletar conta</span>
-            <span className='btn'>Sair</span>
+            <span onClick={handleSignOut} className='btn'>Sair</span>
             <p>{error ? error : ''}</p>
             <p>
               {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
