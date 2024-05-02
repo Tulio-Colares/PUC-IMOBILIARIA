@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 
 export const signUp = async (req, res, next) => {
   const { username, email, password } = req.body;
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
+  const encriptedPassword = bcryptjs.hashSync(password, 10);
+  const newUser = new User({ username, email, password: encriptedPassword });
   try {
     await newUser.save();
     res.status(201).json('Usuário criado com sucesso!');
@@ -46,10 +46,10 @@ export const google = async (req, res, next) => {
 
     } else {
       const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const encriptedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4) , 
         email: req.body.email, 
-        password: hashedPassword, 
+        password: encriptedPassword, 
         avatar: req.body.photo 
       });
       
