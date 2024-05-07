@@ -4,7 +4,9 @@ import { useRef, useState, useEffect } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 
 export default function Profile() {
 
@@ -145,18 +147,28 @@ export default function Profile() {
             <input onChange={handleChange} type="password" className="form-control" id="password"/>
           </div>
 
-          <div className='text-center'>
+          <div className='text-center mb-4'>
             <button type="submit" className="btn btn-primary mt-3 w-25">Atualizar</button>
           </div>
 
-          <div className='flex justify-between mt-5'>
-            <span onClick={handleDeleteUser} className='btn btn-danger'>Deletar conta</span>
-            <span onClick={handleSignOut} className='btn'>Sair</span>
-            <p>{error ? error : ''}</p>
-            <p>
-              {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
-            </p>
+          <div className="text-center mb-3">
+            <Link className='btn btn-success w-25' to={"/create-list"}>
+              Criar lista
+            </Link>
           </div>
+
+          <div className='text-center mb-3 ' >
+            <span onClick={handleDeleteUser} className='btn btn-danger w-25 mx-3'>Deletar conta</span>
+            <span onClick={handleSignOut} className='btn btn-secondary w-25 mx-3'>Sair</span>
+          </div>
+
+          <div className="text-center mb-3">
+            <p>{error ? error : ''}</p>
+              <p>
+                {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
+              </p>
+          </div>
+
         </div>
       </div>  
     </form>

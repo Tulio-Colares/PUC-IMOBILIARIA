@@ -1,8 +1,8 @@
-import List from '../models/listing.js';
+import List from '../models/list.js';
 
-export const createListing = async (req, res, next) => {
+export const createList = async (req, res, next) => {
   try {
-    const listing = await Listing.create(req.body);
+    const list = await List.create(req.body);
     return res.status(201).json(listing);
   } catch (error) {
     next(error);
