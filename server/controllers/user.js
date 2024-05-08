@@ -1,6 +1,8 @@
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.js';
 import { errorHandler } from '../utils/error.js';
+import List from '../models/list.js'
+
 export const test = (req, res) => {
   res.json({
     message: 'Api route is working!',
@@ -34,12 +36,26 @@ export const updateUser = async (req, res, next) => {
 
 export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
-    return next(errorHandler(401, 'You can only delete your own account!'));
+    return next(errorHandler(401, 'Você só pode deletar sua própria conta!'));
   try {
     await User.findByIdAndDelete(req.params.id);
     res.clearCookie('access_token');
-    res.status(200).json('User has been deleted!');
+    res.status(200).json('Usuário foi deletado com sucesso');
   } catch (error) {
     next(error);
+  }
+};
+
+
+export const getUserLists = async (req, res, next) => {
+  if (req.user.id === req.params.id) {
+    try {
+      const listings = await Listing.find({ userRef: req.params.id });
+      res.status(200).json(listings);
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    return next(errorHandler(401, 'Você só pode ver suas próprias listagens!'));
   }
 };
