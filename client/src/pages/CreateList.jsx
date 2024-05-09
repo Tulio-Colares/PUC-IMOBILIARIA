@@ -169,11 +169,12 @@ export default function CreateList() {
                   onChange={handleChange}
                   value={formData.name} 
                   className='w-100 mb-2 rounded' 
-                  type="text"  maxLength='10' 
-                  minLength='50' required
+                  type="text"   
+                  minLength='5'
+                  maxLength='10' required
                 />
                 <textarea 
-                  placeholder='Description'
+                  placeholder='Descrição'
                   id="description"
                   onChange={handleChange}
                   value={formData.description}
@@ -227,7 +228,7 @@ export default function CreateList() {
                     <div class="form-check form-switch text-start m-4">
                         <input onChange={handleChange}
                           value={formData.regularPrice}
-                          min='100' 
+                          min='50' 
                           max='1000000' 
                           className="form-input mx-1" 
                           type="number" 
@@ -260,26 +261,26 @@ export default function CreateList() {
                 <button className=''>Criar Lista</button>
                 {uploading ? 'Uploading...' : 'Upload'}
 
-                <p className='text-red-700 text-sm'>
+                <p className=''>
             {imageUploadError && imageUploadError}
           </p>
           {formData.imageUrls.length > 0 &&
             formData.imageUrls.map((url, index) => (
               <div
                 key={url}
-                className='flex justify-between p-3 border items-center'
+                className=''
               >
                 <img
                   src={url}
                   alt='listing image'
-                  className='w-20 h-20 object-contain rounded-lg'
+                  className=''
                 />
                 <button
                   type='button'
                   onClick={() => handleRemoveImage(index)}
-                  className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'
+                  className=''
                 >
-                  Delete
+                  Deletar
                 </button>
               </div>
             ))}
