@@ -238,7 +238,9 @@ export default function Profile() {
 
                       <div className=''>
                         <button className='' onClick={() => handleListingDelete(listing._id)}>Deletar</button>
-                        <button className=''>Editar</button>
+                        <Link to={`/update-listing/${listing._id}`}>
+                  <button className=''>Edit</button>
+                </Link>
                       </div>
                     </div>
                   ))}
