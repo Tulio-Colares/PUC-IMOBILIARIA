@@ -235,7 +235,9 @@ export default function CreateList() {
                           id="rentValue" 
                           style={{ width: "50px" }}
                         />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Preço Padrão (R$/mês)</label>
+                        {formData.type === 'rent' && (
+                          <span className='form-check-label'>($ / month)</span>
+                        )}
                     </div>
                     <div class="form-check form-switch text-start m-4">
                         <input onChange={handleChange}
@@ -245,7 +247,9 @@ export default function CreateList() {
                           id="rentDiscounted" 
                           style={{ width: "50px" }}
                         />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Desconto (R$/mês)</label>
+                         {formData.type === 'rent' && (
+                          <span className='form-check-label'>($ / month)</span>
+                        )}
                     </div>
                 </div>
 
