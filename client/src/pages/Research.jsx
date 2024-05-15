@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ListItem from '../components/ListItem';
 
 export default function Research() {
   const navigate = useNavigate();
@@ -169,6 +170,22 @@ export default function Research() {
       </div>
       <div className=''>
         <h1 className=''>Resultados:</h1>
+        <div className=''>
+          {!loading && listings.length === 0 && (
+            <p className=''>Nenhuma listagem encontrada</p>
+          )}
+          {loading && (
+            <p className=''>
+              Carregando...
+            </p>
+          )}
+
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <ListingItem key={listing._id} listing={listing} />
+            ))}
+        </div>
       </div>
     </div>
   );

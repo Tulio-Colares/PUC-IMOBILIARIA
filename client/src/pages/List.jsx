@@ -43,9 +43,9 @@ export default function Listing() {
 
   return (
     <main>
-      {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
+      {loading && <p className=''>Carregando...</p>}
       {error && (
-        <p className='text-center my-7 text-2xl'>Something went wrong!</p>
+        <p className=''>Algo deu errado</p>
       )}
       {listing && !loading && !error && (
         <div>
@@ -53,7 +53,7 @@ export default function Listing() {
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className='h-[550px]'
+                  className=''
                   style={{
                     background: `url(${url}) center no-repeat`,
                     backgroundSize: 'cover',
@@ -84,8 +84,8 @@ export default function Listing() {
             <p className=''>
               {listing.name} - ${' '}
               {listing.offer
-                ? listing.discountPrice.toLocaleString('en-US')
-                : listing.regularPrice.toLocaleString('en-US')}
+                ? listing.discountPrice.toLocaleString('pt-BR')
+                : listing.regularPrice.toLocaleString('pt-BR')}
               {listing.type === 'rent' && ' / month'}
             </p>
             <p className=''>
@@ -98,26 +98,26 @@ export default function Listing() {
               </p>
               {listing.offer && (
                 <p className=''>
-                  ${+listing.regularPrice - +listing.discountPrice}
+                  ${+listing.regularPrice - +listing.discountPrice} OFF
                 </p>
               )}
             </div>
             <p className=''>
-              <span className=''>Description - </span>
+              <span className=''>Descrição - </span>
               {listing.description}
             </p>
             <ul className=''>
               <li className=''>
                 <FaBed className='' />
                 {listing.bedrooms > 1
-                  ? `${listing.bedrooms} beds `
-                  : `${listing.bedrooms} bed `}
+                  ? `${listing.bedrooms} camas `
+                  : `${listing.bedrooms} cama `}
               </li>
               <li className=' '>
                 <FaBath className='' />
                 {listing.bathrooms > 1
-                  ? `${listing.bathrooms} baths `
-                  : `${listing.bathrooms} bath `}
+                  ? `${listing.bathrooms} banheiros `
+                  : `${listing.bathrooms} banheiro `}
               </li>
               <li className=''>
                 <FaParking className='' />

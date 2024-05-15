@@ -367,7 +367,7 @@ export default function CreateListing() {
             disabled={loading || uploading}
             className=''
           >
-            {loading ? 'Creating...' : 'Update listing'}
+            {loading ? 'Updating...' : 'Update listing'}
           </button>
           {error && <p className=''>{error}</p>}
         </div>
