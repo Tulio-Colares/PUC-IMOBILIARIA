@@ -1,9 +1,27 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
     const { currentUser } = useSelector((state) => state.user);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('searchTerm', searchTerm);
+        const searchQuery = urlParams.toString();
+        navigate(`/search?${searchQuery}`);
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        if (searchTermFromUrl) {
+        setSearchTerm(searchTermFromUrl);
+        }
+    }, [location.search]);
 
   return (
     <header>
@@ -25,8 +43,9 @@ export default function Header() {
                     <a className="nav-link" href="#">Logar</a>
                     </li>
                 </ul>
-                    <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" placeholder="Pesquisa" aria-label="Search"></input>
+                    <form className="d-flex" role="search" onSubmit={handleSubmit}>
+                        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} 
+                            className="form-control me-2" type="search" placeholder="Pesquisa" aria-label="Search"></input>
                         <button className="btn btn-outline-success" type="submit">Pesquisar</button>
                     </form>
                 </div>
