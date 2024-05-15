@@ -10,6 +10,7 @@ import CreateList from './pages/CreateList';
 import PrivateRoute from './components/PrivateRoute';
 import List from './pages/List';
 import UpdateList from './pages/UpdateList';
+import Research from './pages/Research';
 
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/search' element={<Research />} />
         <Route path='/about' element={<About />} />
         <Route path='/list/:listId' element={<List />} />
         <Route element={<PrivateRoute />}>
