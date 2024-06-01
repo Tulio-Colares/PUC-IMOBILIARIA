@@ -1,8 +1,8 @@
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
-import { app } from '../firebase';
 
 export default function OAuth() {
   const dispatch = useDispatch();
@@ -13,8 +13,6 @@ export default function OAuth() {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
-
-      console.log(result)
 
       const res = await fetch('/server/auth/google', {
         method: 'POST',
@@ -31,16 +29,16 @@ export default function OAuth() {
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.log('Não foi possível assinar com o Google', error);
     }
   };
   return (
     <button
       onClick={handleGoogleClick}
       type='button'
-      className='btn btn-danger w-50 text-lg'
+      className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95'
     >
-      GOOGLE
+      Continue com google
     </button>
   );
 }

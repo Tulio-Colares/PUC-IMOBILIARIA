@@ -33,52 +33,53 @@ export default function SignUp() {
       }
       setLoading(false);
       setError(null);
-      navigate('/');
+      navigate('/sign-in');
     } catch (error) {
       setLoading(false);
       setError(error.message);
     }
   };
-
   return (
-    <div className='container'>
-      <div className='row justify-content-center'>
-        <div className='col-6'>
-          <div className='col text-center'>
-            <h1>Crie uma conta</h1>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="UserName" className="form-label">Nome de usuário</label>
-              <input type="text" className="form-control" id="username" onChange={handleChange} aria-describedby="user name"/>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="Email" className="form-label">Email</label>
-              <input type="email" className="form-control" id="email" onChange={handleChange} aria-describedby="email"/>
-              <div id="emailHelp" className="form-text">Nós nunca iremos compartilhar o seu email com ninguém! </div>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="Password" className="form-label">Senha</label>
-              <input type="password" className="form-control" id="password" onChange={handleChange}/>
-            </div>
-            <div className='col text-center'>
-              <button disabled={loading} className='btn btn-primary'>
-                {loading ? 'Loading...' : 'Sign Up'}
-              </button>
-            </div>
-            <div className='text-center mt-3'>
-              <OAuth/>
-            </div>
-            <div className=' mt-5 text-center'>
-              <p>Já tem uma conta?</p>
-              <Link to={'/sign-in'}>
-                <span>Sign in</span>
-              </Link>
-            </div>
-            {error && <p className='bg-danger-subtle text-danger p-2 rounded text-center'>{error}</p>}
-          </form>
-        </div>
+    <div className='p-3 max-w-lg mx-auto'>
+      <h1 className='text-3xl text-center font-semibold my-7'>Criar conta</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+        <input
+          type='text'
+          placeholder='Nome de usuário'
+          className='border p-3 rounded-lg'
+          id='username'
+          onChange={handleChange}
+        />
+        <input
+          type='email'
+          placeholder='email'
+          className='border p-3 rounded-lg'
+          id='email'
+          onChange={handleChange}
+        />
+        <input
+          type='password'
+          placeholder='senha'
+          className='border p-3 rounded-lg'
+          id='password'
+          onChange={handleChange}
+        />
+
+        <button
+          disabled={loading}
+          className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+        >
+          {loading ? 'Carregando...' : 'Criar conta'}
+        </button>
+        <OAuth/>
+      </form>
+      <div className='flex gap-2 mt-5'>
+        <p>Já tem uma conta?</p>
+        <Link to={'/sign-in'}>
+          <span className='text-blue-700'>Entrar</span>
+        </Link>
       </div>
+      {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
-  )
+  );
 }

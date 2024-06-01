@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
 
 export default function SignIn() {
@@ -30,7 +34,6 @@ export default function SignIn() {
       console.log(data);
       if (data.success === false) {
         dispatch(signInFailure(data.message));
-        setError(data.message)
         return;
       }
       dispatch(signInSuccess(data));
@@ -39,41 +42,40 @@ export default function SignIn() {
       dispatch(signInFailure(error.message));
     }
   };
-
   return (
-    <div className='container'>
-      <div className='row justify-content-center'>
-        <div className='col-6'>
-          <div className='col text-center'>
-            <h1>Conectar</h1>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="Email" className="form-label">Email</label>
-              <input type="email" className="form-control" id="email" onChange={handleChange} aria-describedby="email"/>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="Password" className="form-label">Senha</label>
-              <input type="password" className="form-control" id="password" onChange={handleChange}/>
-            </div>
-            <div className='col text-center'>
-              <button disabled={loading} className='btn btn-primary'>
-                {loading ? 'Loading...' : 'Sign Up'}
-              </button>
-            </div>
-            <div className='col text-center  mt-2'>
-              <OAuth />
-            </div>
-            <div className='mt-5 text-center'>
-              <p>Ainda não tem uma conta?</p>
-              <Link to={'/sign-up'}>
-                <span>Sign up</span>
-              </Link>
-            </div>
-            {error && <p className='bg-danger-subtle text-danger p-2 rounded text-center'>{error}</p>}
-          </form>
-        </div>
+    <div className='p-3 max-w-lg mx-auto'>
+      <h1 className='text-3xl text-center font-semibold my-7'>Entrar</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+        <input
+          type='email'
+          placeholder='email'
+          className='border p-3 rounded-lg'
+          id='email'
+          onChange={handleChange}
+        />
+        <input
+          type='password'
+          placeholder='Senha'
+          className='border p-3 rounded-lg'
+          id='password'
+          onChange={handleChange}
+        />
+
+        <button
+          disabled={loading}
+          className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+        >
+          {loading ? 'Carregando...' : 'Entrar'}
+        </button>
+        <OAuth/>
+      </form>
+      <div className='flex gap-2 mt-5'>
+        <p>Não tem uma conta?</p>
+        <Link to={'/sign-up'}>
+          <span className='text-blue-700'>Criar conta</span>
+        </Link>
       </div>
+      {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
-  )
+  );
 }

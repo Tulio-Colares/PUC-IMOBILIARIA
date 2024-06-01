@@ -1,15 +1,24 @@
-import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 import { app } from '../firebase';
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
-import { Link } from 'react-router-dom';
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  signOutUserStart,
+} from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
-
-
+import { Link } from 'react-router-dom';
 export default function Profile() {
-
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
@@ -20,7 +29,12 @@ export default function Profile() {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
-  console.log(formData)
+
+  // firebase storage
+  // allow read;
+  // allow write: if
+  // request.resource.size < 2 * 1024 * 1024 &&
+  // request.resource.contentType.matches('image/.*')
 
   useEffect(() => {
     if (file) {
@@ -34,11 +48,16 @@ export default function Profile() {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on('state_changed', (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setFilePerc(Math.round(progress));
       },
-      (error) => {setFileUploadError(true)},
+      (error) => {
+        setFileUploadError(true);
+      },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
           setFormData({ ...formData, avatar: downloadURL })
@@ -55,7 +74,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/server/user/update/${currentUser._id}`, {
+      const res = await fetch(`/server/user/updateToken/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +97,7 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/server/user/deleteToken/${currentUser._id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -93,10 +112,9 @@ export default function Profile() {
   };
 
   const handleSignOut = async () => {
-
     try {
-      dispatch(signOutUserStart())
-      const res = await fetch('/api/auth/signout');
+      dispatch(signOutUserStart());
+      const res = await fetch('/server/auth/signout');
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
@@ -106,12 +124,12 @@ export default function Profile() {
     } catch (error) {
       dispatch(deleteUserFailure(data.message));
     }
-  }
+  };
 
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const res = await fetch(`/server/user/listings/${currentUser._id}`);
       const data = await res.json();
       if (data.success === false) {
         setShowListingsError(true);
@@ -124,10 +142,9 @@ export default function Profile() {
     }
   };
 
-  
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
+      const res = await fetch(`/server/listing/deleteToken/${listingId}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -143,112 +160,137 @@ export default function Profile() {
       console.log(error.message);
     }
   };
-
   return (
-    <form onSubmit={handleSubmit} className='container mt-3'>
-      <div className='row justify-content-center'>
-        <div className='col-6 '>
-          <h1 className='text-center'>Perfil</h1>
+    <div className='p-3 max-w-lg mx-auto'>
+      <h1 className='text-3xl font-semibold text-center my-7'>Seu Perfil</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+        <input
+          onChange={(e) => setFile(e.target.files[0])}
+          type='file'
+          ref={fileRef}
+          hidden
+          accept='image/*'
+        />
+        <img
+          onClick={() => fileRef.current.click()}
+          src={formData.avatar || currentUser.avatar}
+          alt='profile'
+          className='rounded-xl h-24 w-24 object-cover cursor-pointer self-center mt-2'
+        />
+        <p className='text-sm self-center'>
+          {fileUploadError ? (
+            <span className='text-red-700'>
+              Erro no upload de imagem (imagem deve ter menos de 2 mb)
+            </span>
+          ) : filePerc > 0 && filePerc < 100 ? (
+            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
+          ) : filePerc === 100 ? (
+            <span className='text-green-700'>Upload da imagem completo</span>
+          ) : (
+            ''
+          )}
+        </p>
+        <label className='-mb-4 text-s'> Altere seu Nome de usuário</label>
+        <input
+          type='text'
+          placeholder='username'
+          defaultValue={currentUser.username}
+          id='username'
+          className='border p-3 rounded-lg'
+          onChange={handleChange}
+        />
+        <label className='-mb-4 text-s'>Altere seu Email</label>
+        <input
+          type='email'
+          placeholder='email'
+          id='email'
+          defaultValue={currentUser.email}
+          className='border p-3 rounded-lg'
+          onChange={handleChange}
+        />
+        <label className='-mb-4 text-s'>Altere sua Senha</label>
+        <input
+          type='password'
+          placeholder='Digite sua nova senha'
+          onChange={handleChange}
+          id='password'
+          className='border p-3 rounded-lg'
+        />
+        <button
+          disabled={loading}
+          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
+        >
+          {loading ? 'Carregando...' : 'Atualizar'}
+        </button>
+        <Link
+          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          to={'/create-listing'}
+        >
+          Criar Lista
+        </Link>
+      </form>
+      <div className='flex justify-between mt-5'>
+        <span
+          onClick={handleDeleteUser}
+          className='text-red-700 cursor-pointer'
+        >
+          Deletar conta
+        </span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
+          Log out
+        </span>
+      </div>
 
-          <input onChange={(e) => setFile(e.target.files[0])} type='file' ref={fileRef} hidden accept='image/*' />
+      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
+      <p className='text-green-700 mt-5'>
+        {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
+      </p>
+      <button onClick={handleShowListings} className='text-green-700 w-full'>
+        Mostrar Listas
+      </button>
+      <p className='text-red-700 mt-5'>
+        {showListingsError ? 'Erro ao mostrar as listas. Sua senha está correta?' : ''}
+      </p>
 
-          <img className='rounded my-4 mx-auto d-block pe-auto' width="200" height="200" 
-            onClick={() => fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt='profile'/>
+      {userListings && userListings.length > 0 && (
+        <div className='flex flex-col gap-4'>
+          <h1 className='text-center mt-7 text-2xl font-semibold'>
+            Suas listas
+          </h1>
+          {userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className='border rounded-lg p-3 flex justify-between items-center gap-4'
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imageUrls[0]}
+                  alt='listing cover'
+                  className='h-16 w-16 object-contain'
+                />
+              </Link>
+              <Link
+                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
 
-          <p className='text-sm self-center'>
-            {fileUploadError ? (
-              <span className=''>
-                A imagem precisa ter tamanho inferior a 2 mb
-              </span>
-            ) : filePerc > 0 && filePerc < 100 ? (
-              <span>{`Uploading ${filePerc}%`}</span>
-            ) : filePerc === 100 ? (
-              <span className='text-success text-center'>Imagem carregada com sucesso!</span>
-            ) : ('')}
-          </p>
-
-          <div className="mb-3">
-            <label htmlFor="exampleInputName1" className="form-label">Novo Nome de usuário</label>
-            <input defaultValue={currentUser.username} onChange={handleChange} 
-             type="text" className="form-control" id="username" aria-describedby="userNameHelp"/>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Novo Email</label>
-            <input defaultValue={currentUser.email} onChange={handleChange} 
-             type="email" className="form-control" id="email" aria-describedby="emailHelp"/>
-            <div className="form-text">Nós nunca iremos compartilhar o seu email com ninguém!</div>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword" className="form-label">Nova Senha</label>
-            <input onChange={handleChange} type="password" className="form-control" id="password"/>
-          </div>
-
-          <div className='text-center mb-4'>
-            <button type="submit" className="btn btn-primary mt-3 w-25">Atualizar</button>
-          </div>
-
-          <div className="text-center mb-3">
-            <Link className='btn btn-success w-25' to={"/create-list"}>
-              Criar lista
-            </Link>
-          </div>
-
-          <div className='text-center mb-3 ' >
-            <span onClick={handleDeleteUser} className='btn btn-danger w-25 mx-3'>Deletar conta</span>
-            <span onClick={handleSignOut} className='btn btn-secondary w-25 mx-3'>Sair</span>
-          </div>
-
-          <div className="text-center mb-3">
-            <p>{error ? error : ''}</p>
-              <p>
-                {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
-              </p>
-
-              <button onClick={handleShowListings} className='btn btn-success'>
-                Mostrar Listagens
-              </button>
-              <p className='text-danger mt-4'>
-                {showListingsError ? 'Erro ao mostrar listagens' : ''}
-              </p>
-
-              {userListings && 
-                userListings.length > 0 &&
-                <div className="">
-                  <h1 className=''>Suas listagens</h1>
-                  {userListings.map((listing) => (
-                    <div
-                      key={listing._id}
-                      className=''
-                    >
-                      <Link to={`/listing/${listing._id}`}>
-                        <img
-                          src={listing.imageUrls[0]}
-                          alt='listing cover'
-                          className=''
-                        />
-                      </Link>
-                      <Link
-                        className=''
-                        to={`/listing/${listing._id}`}
-                      >
-                        <p>{listing.name}</p>
-                      </Link>
-
-                      <div className=''>
-                        <button className='' onClick={() => handleListingDelete(listing._id)}>Deletar</button>
-                        <Link to={`/update-listing/${listing._id}`}>
-                  <button className=''>Edit</button>
+              <div className='flex flex-col item-center'>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className='text-green-700 uppercase'>Editar</button>
                 </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>}
-          </div>
-
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  className='text-red-700 uppercase'
+                >
+                  Deletar
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>  
-    </form>
-  )
+      )}
+    </div>
+  );
 }

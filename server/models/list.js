@@ -1,12 +1,8 @@
 import mongoose from 'mongoose';
 
-const listSchema = new mongoose.Schema(
+const listingSchema = new mongoose.Schema(
   {
     name: {
-      type: String,
-      required: true,
-    },
-    address: {
       type: String,
       required: true,
     },
@@ -14,20 +10,24 @@ const listSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: Number,
+      required: false,
+    },
+    builtAt: {
+      type: Date,
+      required: false,
+    },
     regularPrice: {
       type: Number,
       required: true,
     },
     discountPrice: {
       type: Number,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    furnished: {
-      type: Boolean,
       required: true,
     },
     bathrooms: {
@@ -38,11 +38,19 @@ const listSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    offer: {
+    furnished: {
       type: Boolean,
       required: true,
     },
     parking: {
+      type: Boolean,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    offer: {
       type: Boolean,
       required: true,
     },
@@ -58,6 +66,6 @@ const listSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const List = mongoose.model('List', listSchema);
+const Listing = mongoose.model('Listing', listingSchema);
 
-export default List;
+export default Listing;

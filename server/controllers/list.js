@@ -1,41 +1,41 @@
-import List from '../models/list.js';
+import Listing from '../models/list.js';
 import { errorHandler } from '../utils/error.js';
 
-export const createList = async (req, res, next) => {
+export const createListing = async (req, res, next) => {
   try {
-    const list = await List.create(req.body);
+    const listing = await Listing.create(req.body);
     return res.status(201).json(listing);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteList = async (req, res, next) => {
+export const deleteListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
 
   if (!listing) {
-    return next(errorHandler(404, 'Listagem não encontrada'));
+    return next(errorHandler(404, 'Lista não encontrada'));
   }
 
   if (req.user.id !== listing.userRef) {
-    return next(errorHandler(401, 'Você só pode deletar suas própriaslistagens!'));
+    return next(errorHandler(401, 'Você só pode deletar suas próprias listas!'));
   }
 
   try {
     await Listing.findByIdAndDelete(req.params.id);
-    res.status(200).json('Listagem deletada!');
+    res.status(200).json('Lista deletada');
   } catch (error) {
     next(error);
   }
 };
 
-export const updateList = async (req, res, next) => {
+export const updateListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
-    return next(errorHandler(404, 'Listagem não encontrada'));
+    return next(errorHandler(404, 'Lista não encontrada'));
   }
   if (req.user.id !== listing.userRef) {
-    return next(errorHandler(401, 'Você só pode deletar suas próprias listagens'));
+    return next(errorHandler(401, 'Você só pode atualizar suas próprias lista'));
   }
 
   try {
@@ -50,19 +50,19 @@ export const updateList = async (req, res, next) => {
   }
 };
 
-export const getList = async (req, res, next) => {
+export const getListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
-      return next(errorHandler(404, 'Listagem não encontrada'));
+      return next(errorHandler(404, 'Lista não encontrada'));
     }
     res.status(200).json(listing);
   } catch (error) {
     next(error);
-    }
-  };
+  }
+};
 
-export const getLists = async (req, res, next) => {
+export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0;
