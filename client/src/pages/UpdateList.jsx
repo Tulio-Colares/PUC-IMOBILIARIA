@@ -19,6 +19,8 @@ export default function CreateListing() {
     name: '',
     description: '',
     address: '',
+    builtAt: 0,
+    size: 0,
     type: 'rent',
     bedrooms: 1,
     bathrooms: 1,
@@ -283,6 +285,26 @@ export default function CreateListing() {
                 value={formData.bathrooms}
               />
               <p>Banheiros</p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <input
+                type='number'
+                id='builtAt'
+                className='p-3 border border-gray-300 rounded-lg'
+                onChange={handleChange}
+                value={formData.builtAt}
+              />
+              <p>Data de construção</p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <input
+                type='number'
+                id='size'
+                className='p-3 border border-gray-300 rounded-lg'
+                onChange={handleChange}
+                value={formData.size}
+              />
+              <p>Tamanho (m²)</p>
             </div>
             <div className='flex items-center gap-2'>
               <input

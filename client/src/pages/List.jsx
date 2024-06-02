@@ -9,11 +9,13 @@ import {
   FaBath,
   FaBed,
   FaChair,
+  FaHourglassHalf,
   FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
   FaShare,
 } from 'react-icons/fa';
+import { SlSizeFullscreen } from "react-icons/sl";
 import Contact from '../components/Contact';
 
 // https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
@@ -52,7 +54,7 @@ export default function List() {
 
   return (
     <main>
-      {loading && <p className='text-center my-7 text-2xl'>Xarregando...</p>}
+      {loading && <p className='text-center my-7 text-2xl'>Carregando...</p>}
       {error && (
         <p className='text-center my-7 text-2xl'>Algo deu errado</p>
       )}
@@ -62,7 +64,8 @@ export default function List() {
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className='h-[550px]'
+                  className='h-[750px]'
+                  alt='copiar link'
                   style={{
                     background: `url(${url}) center no-repeat`,
                     backgroundSize: 'cover',
@@ -134,6 +137,14 @@ export default function List() {
               <li className='flex items-center gap-1 whitespace-nowrap '>
                 <FaChair className='text-lg' />
                 {listing.furnished ? 'Mobiliado' : 'Não mobiliado'}
+              </li>
+              <li className='flex items-center gap-1 whitespace-nowrap '>
+                <FaHourglassHalf className='text-lg' />
+                {listing.builtAt ? `Construído em ${listing.builtAt}` : ''}
+              </li>
+              <li className='flex items-center gap-1 whitespace-nowrap '>
+                <SlSizeFullscreen className='text-lg' />
+                {listing.size ? ` ${listing.size} m²` : ' '}
               </li>
             </ul>
             {currentUser && listing.userRef !== currentUser._id && !contact && (

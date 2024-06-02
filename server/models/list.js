@@ -19,7 +19,7 @@ const listingSchema = new mongoose.Schema(
       required: false,
     },
     builtAt: {
-      type: Date,
+      type: String,
       required: false,
     },
     regularPrice: {

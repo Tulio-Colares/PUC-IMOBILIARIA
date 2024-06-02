@@ -156,7 +156,7 @@ export default function CreateList() {
     }
   };
   return (
-    <main className='p-3 max-w-4xl mx-auto'>
+    <main className='p-3 max-w-4xl mx-auto py-20'>
       <h1 className='text-3xl font-semibold text-center my-7'>
         Criar uma lista
       </h1>
@@ -167,8 +167,8 @@ export default function CreateList() {
             placeholder='Nome'
             className='border p-3 rounded-lg'
             id='name'
-            maxLength='62'
             minLength='10'
+            maxLength='62'
             required
             onChange={handleChange}
             value={formData.name}
@@ -184,7 +184,7 @@ export default function CreateList() {
           />
           <input
             type='text'
-            placeholder='Address'
+            placeholder='Endereço'
             className='border p-3 rounded-lg'
             id='address'
             required
@@ -279,6 +279,16 @@ export default function CreateList() {
                 value={formData.builtAt}
               />
               <p>Data de construção</p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <input
+                type='number'
+                id='size'
+                className='p-3 border border-gray-300 rounded-lg'
+                onChange={handleChange}
+                value={formData.size}
+              />
+              <p>Tamanho (m²)</p>
             </div>
             <div className='flex items-center gap-2'>
               <input

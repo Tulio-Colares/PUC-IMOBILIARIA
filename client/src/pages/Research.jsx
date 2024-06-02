@@ -7,6 +7,9 @@ export default function Research() {
   const [sidebardata, setSidebardata] = useState({
     searchTerm: '',
     type: 'all',
+    address: false,
+    builtAt: false,
+    size: false,
     parking: false,
     furnished: false,
     offer: false,
@@ -22,11 +25,14 @@ export default function Research() {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get('searchTerm');
     const typeFromUrl = urlParams.get('type');
+    const builtAtFromUrl = urlParams.get('searchTerm');
+    const sizeFromUrl = urlParams.get('searchTerm');
     const parkingFromUrl = urlParams.get('parking');
     const furnishedFromUrl = urlParams.get('furnished');
     const offerFromUrl = urlParams.get('offer');
     const sortFromUrl = urlParams.get('sort');
     const orderFromUrl = urlParams.get('order');
+    const addressFromUrl = urlParams.get('searchTerm');
 
     if (
       searchTermFromUrl ||
@@ -35,17 +41,23 @@ export default function Research() {
       furnishedFromUrl ||
       offerFromUrl ||
       sortFromUrl ||
-      orderFromUrl
+      orderFromUrl ||
+      addressFromUrl
     ) {
       setSidebardata({
         searchTerm: searchTermFromUrl || '',
         type: typeFromUrl || 'all',
+        builtAt: builtAtFromUrl.length > 0 ? true : false,
+        size: sizeFromUrl === 'true' ? true : false ,
         parking: parkingFromUrl === 'true' ? true : false,
         furnished: furnishedFromUrl === 'true' ? true : false,
         offer: offerFromUrl === 'true' ? true : false,
         sort: sortFromUrl || 'created_at',
         order: orderFromUrl || 'desc',
+        address: addressFromUrl || '',
       });
+      console.log(sidebardata)
+      console.log(builtAtFromUrl)
     }
 
     const fetchListings = async () => {
@@ -70,13 +82,13 @@ export default function Research() {
     if (
       e.target.id === 'all' ||
       e.target.id === 'rent' ||
-      e.target.id === 'sale'
+      e.target.id === 'sale' 
     ) {
       setSidebardata({ ...sidebardata, type: e.target.id });
     }
 
     if (e.target.id === 'searchTerm') {
-      setSidebardata({ ...sidebardata, searchTerm: e.target.value });
+      setSidebardata({ ...sidebardata, searchTerm: e.target.value});
     }
 
     if (
@@ -109,7 +121,10 @@ export default function Research() {
     urlParams.set('furnished', sidebardata.furnished);
     urlParams.set('offer', sidebardata.offer);
     urlParams.set('sort', sidebardata.sort);
+    urlParams.set('size', sidebardata.size);
+    urlParams.set('builtAt', sidebardata.builtAt);
     urlParams.set('order', sidebardata.order);
+    urlParams.set('address', sidebardata.address)
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
@@ -128,7 +143,7 @@ export default function Research() {
     setListings([...listings, ...data]);
   };
   return (
-    <div className='flex flex-col md:flex-row'>
+    <div className='flex flex-col md:flex-row pt-20'>
       <div className='p-7  border-b-2 md:border-r-2 md:min-h-screen'>
         <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
           <div className='flex items-center gap-2'>
@@ -138,7 +153,7 @@ export default function Research() {
             <input
               type='text'
               id='searchTerm'
-              placeholder='Search...'
+              placeholder='Buscar...'
               className='border rounded-lg p-3 w-full'
               value={sidebardata.searchTerm}
               onChange={handleChange}
@@ -188,7 +203,7 @@ export default function Research() {
             </div>
           </div>
           <div className='flex gap-2 flex-wrap items-center'>
-            <label className='font-semibold'>Amenities:</label>
+            <label className='font-semibold'>Conveniência:</label>
             <div className='flex gap-2'>
               <input
                 type='checkbox'
@@ -220,8 +235,8 @@ export default function Research() {
             >
               <option value='regularPrice_desc'>Preço maior para menor</option>
               <option value='regularPrice_asc'>Preço menor para maior</option>
-              <option value='createdAt_desc'>Mais recente</option>
-              <option value='createdAt_asc'>Mais antigo</option>
+              <option value='createdAt_desc'>Postagem Mais recente</option>
+              <option value='createdAt_asc'>Postagem Mais antiga</option>
             </select>
           </div>
           <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>
