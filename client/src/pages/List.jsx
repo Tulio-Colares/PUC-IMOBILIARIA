@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { useSelector } from 'react-redux';
@@ -50,6 +50,7 @@ export default function List() {
       }
     };
     fetchListing();
+    console.log(listing)
   }, [params.listingId]);
 
   return (
@@ -156,6 +157,17 @@ export default function List() {
               </button>
             )}
             {contact && <Contact listing={listing} />}
+            {currentUser && listing.userRef == currentUser._id && (
+              <>
+              <label className='text-gray-600 line-clamp-2 -mb-3'>Esta postagem é sua</label>
+              <button className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>
+                <Link to={`/update-listing/${listing._id}`}>
+                  Editar
+                </Link>
+                </button>
+              </>
+              
+            )}
           </div>
         </div>
       )}
