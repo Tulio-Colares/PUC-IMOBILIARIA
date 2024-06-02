@@ -57,7 +57,7 @@ export default function CreateList() {
           setUploading(false);
         });
     } else {
-      setImageUploadError('Você só pode fazer upload de até 6 imagens por lista');
+      setImageUploadError('Você só pode fazer upload de até 6 imagens por imóvel');
       setUploading(false);
     }
   };
@@ -158,7 +158,7 @@ export default function CreateList() {
   return (
     <main className='p-3 max-w-4xl mx-auto py-20'>
       <h1 className='text-3xl font-semibold text-center my-7'>
-        Criar uma lista
+        Postar um imóvel
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
@@ -383,7 +383,7 @@ export default function CreateList() {
             disabled={loading || uploading}
             className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-            {loading ? 'Criando...' : 'Criar lista'}
+            {loading ? 'Criando...' : 'Postar imóvel'}
           </button>
           {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>

@@ -246,11 +246,11 @@ export default function Research() {
       </div>
       <div className='flex-1'>
         <h1 className='text-3xl font-semibold border-b p-3 text-slate-700 mt-5'>
-          Resultados da lista:
+          Resultados da pesquisa:
         </h1>
         <div className='p-7 flex flex-wrap gap-4'>
           {!loading && listings.length === 0 && (
-            <p className='text-xl text-slate-700'>Nenhuma lista encontrada</p>
+            <p className='text-xl text-slate-700'>Nenhuma postagem encontrada</p>
           )}
           {loading && (
             <p className='text-xl text-slate-700 text-center w-full'>

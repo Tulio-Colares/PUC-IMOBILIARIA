@@ -67,6 +67,7 @@ export default function Home() {
         >
           Venha conferir!
         </Link>
+        <p className='mt-5 text-slate-700'><strong><i>Atenção! Este é um site puramente acadêmico. Nenhum dos imóveis apresentados aqui é real!</i></strong></p>
       </div>
 
       {/* swiper */}

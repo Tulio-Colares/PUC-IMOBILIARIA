@@ -59,7 +59,7 @@ export const getUserListings = async (req, res, next) => {
       next(error);
     }
   } else {
-    return next(errorHandler(401, 'Você só pode ver as suas próprias listas'));
+    return next(errorHandler(401, 'Você só pode ver as suas próprias postagens'));
   }
 };
 

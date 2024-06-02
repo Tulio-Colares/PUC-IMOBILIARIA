@@ -226,7 +226,7 @@ export default function Profile() {
           className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
           to={'/create-listing'}
         >
-          Criar Lista
+          Postar imóvel
         </Link>
       </form>
       <div className='flex justify-between mt-5'>
@@ -246,16 +246,16 @@ export default function Profile() {
         {updateSuccess ? 'Usuário atualizado com sucesso!' : ''}
       </p>
       <button onClick={handleShowListings} className='text-green-700 w-full'>
-        Mostrar Listas
+        Listar imóveis
       </button>
       <p className='text-red-700 mt-5'>
-        {showListingsError ? 'Erro ao mostrar as listas. Sua senha está correta?' : ''}
+        {showListingsError ? 'Erro ao mostrar as postagens. Sua senha está correta?' : ''}
       </p>
 
       {userListings && userListings.length > 0 && (
         <div className='flex flex-col gap-4'>
           <h1 className='text-center mt-7 text-2xl font-semibold'>
-            Suas listas
+            Suas postagens
           </h1>
           {userListings.map((listing) => (
             <div

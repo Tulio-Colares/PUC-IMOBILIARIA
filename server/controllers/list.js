@@ -14,16 +14,16 @@ export const deleteListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
 
   if (!listing) {
-    return next(errorHandler(404, 'Lista não encontrada'));
+    return next(errorHandler(404, 'Postagem não encontrada'));
   }
 
   if (req.user.id !== listing.userRef) {
-    return next(errorHandler(401, 'Você só pode deletar suas próprias listas!'));
+    return next(errorHandler(401, 'Você só pode deletar suas próprias postagens!'));
   }
 
   try {
     await Listing.findByIdAndDelete(req.params.id);
-    res.status(200).json('Lista deletada');
+    res.status(200).json('Postagem deletada');
   } catch (error) {
     next(error);
   }
@@ -32,10 +32,10 @@ export const deleteListing = async (req, res, next) => {
 export const updateListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
-    return next(errorHandler(404, 'Lista não encontrada'));
+    return next(errorHandler(404, 'Postagem não encontrada'));
   }
   if (req.user.id !== listing.userRef) {
-    return next(errorHandler(401, 'Você só pode atualizar suas próprias lista'));
+    return next(errorHandler(401, 'Você só pode atualizar suas próprias postagem'));
   }
 
   try {
@@ -54,7 +54,7 @@ export const getListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
-      return next(errorHandler(404, 'Lista não encontrada'));
+      return next(errorHandler(404, 'Postagem não encontrada'));
     }
     res.status(200).json(listing);
   } catch (error) {

@@ -4,6 +4,7 @@ export default function About() {
   return (
     <div className='py-20 px-4 max-w-6xl mx-auto'>
       <h1 className='text-3xl font-bold mb-4 text-slate-800'>Sobre Puc Imóveis</h1>
+      <p className='mb-4 text-slate-700'><strong><i>Atenção! Este é um site acadêmico. Nenhum dos imóveis apresentados aqui é real!</i></strong></p>
       <p className='mb-4 text-slate-700'>PUC Imóveis é uma agência imobiliária líder especializada em ajudar clientes a comprar, vender e alugar propriedades nos bairros mais desejáveis. Nossa equipe de agentes experientes se dedica a fornecer um serviço excepcional e tornar o processo de compra e venda o mais tranquilo possível.</p>
       <p className='mb-4 text-slate-700'>
       Nossa missão é ajudar nossos clientes a atingir seus objetivos imobiliários, fornecendo consultoria especializada, atendimento personalizado e um profundo conhecimento do mercado local. Se você deseja comprar, vender ou alugar um imóvel, estamos aqui para ajudá-lo em cada etapa do processo.
