@@ -175,7 +175,7 @@ export default function CreateList() {
           />
           <textarea
             type='text'
-            placeholder='Description'
+            placeholder='Descrição'
             className='border p-3 rounded-lg'
             id='description'
             required
@@ -261,8 +261,6 @@ export default function CreateList() {
               <input
                 type='number'
                 id='bathrooms'
-                min='1'
-                max='10'
                 required
                 className='p-3 border border-gray-300 rounded-lg'
                 onChange={handleChange}

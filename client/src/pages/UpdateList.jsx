@@ -172,9 +172,9 @@ export default function CreateListing() {
     }
   };
   return (
-    <main className='p-3 max-w-4xl mx-auto'>
+    <main className='p-3 max-w-4xl mx-auto mt-20'>
       <h1 className='text-3xl font-semibold text-center my-7'>
-        Atualizar uma postagem
+        Atualizar esta postagem
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
